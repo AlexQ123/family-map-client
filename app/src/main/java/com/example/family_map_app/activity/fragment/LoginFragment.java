@@ -47,6 +47,16 @@ public class LoginFragment extends Fragment {
     private LoginRequest loginRequest;
     private RegisterRequest registerRequest;
 
+    private Listener listener;
+
+    public interface Listener {
+        void notifySignIn();
+    }
+
+    public void registerListener(Listener listener) {
+        this.listener = listener;
+    }
+
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -162,12 +172,15 @@ public class LoginFragment extends Fragment {
                         Bundle bundle = message.getData();
                         boolean isLoginSuccess = bundle.getBoolean(LOGIN_SUCCESS_KEY);
                         if (isLoginSuccess) {
-                            DataCache dataCache = DataCache.getInstance();
-                            String userFirst = dataCache.getUser().getFirstName();
-                            String userLast = dataCache.getUser().getLastName();
-
-                            Toast.makeText(getActivity(), userFirst + " " + userLast,
-                                    Toast.LENGTH_LONG).show();
+//                            DataCache dataCache = DataCache.getInstance();
+//                            String userFirst = dataCache.getUser().getFirstName();
+//                            String userLast = dataCache.getUser().getLastName();
+//
+//                            Toast.makeText(getActivity(), userFirst + " " + userLast,
+//                                    Toast.LENGTH_LONG).show();
+                            if (listener != null) {
+                                listener.notifySignIn();
+                            }
                         }
                         else {
                             Toast.makeText(getActivity(), R.string.loginFailToast,
@@ -196,12 +209,15 @@ public class LoginFragment extends Fragment {
                         Bundle bundle = message.getData();
                         boolean isRegisterSuccess = bundle.getBoolean(REGISTER_SUCCESS_KEY);
                         if (isRegisterSuccess) {
-                            DataCache dataCache = DataCache.getInstance();
-                            String userFirst = dataCache.getUser().getFirstName();
-                            String userLast = dataCache.getUser().getLastName();
-
-                            Toast.makeText(getActivity(), userFirst + " " + userLast,
-                                    Toast.LENGTH_LONG).show();
+//                            DataCache dataCache = DataCache.getInstance();
+//                            String userFirst = dataCache.getUser().getFirstName();
+//                            String userLast = dataCache.getUser().getLastName();
+//
+//                            Toast.makeText(getActivity(), userFirst + " " + userLast,
+//                                    Toast.LENGTH_LONG).show();
+                            if (listener != null) {
+                                listener.notifySignIn();
+                            }
                         }
                         else {
                             Toast.makeText(getActivity(), R.string.registerFailToast,

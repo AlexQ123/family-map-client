@@ -8,9 +8,10 @@ import android.os.Bundle;
 
 import com.example.family_map_app.R;
 import com.example.family_map_app.activity.fragment.LoginFragment;
+import com.example.family_map_app.activity.fragment.MapFragment;
 import com.example.family_map_app.serverdata.DataCache;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoginFragment.Listener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,18 @@ public class MainActivity extends AppCompatActivity {
 
     private Fragment createLoginFragment() {
         LoginFragment fragment = new LoginFragment();
+        fragment.registerListener(this);
         return fragment;
     }
+
+    @Override
+    public void notifySignIn() {
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        Fragment fragment = new MapFragment();
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragmentFrameLayout, fragment)
+                .commit();
+    }
+
 }
