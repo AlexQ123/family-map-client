@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.example.family_map_app.R;
 import com.example.family_map_app.activity.fragment.LoginFragment;
+import com.example.family_map_app.serverdata.DataCache;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentFrameLayout);
-        if (fragment == null) {
+        if (fragment == null || (DataCache.getInstance().getAuthToken() == null)) {
             fragment = createLoginFragment();
             fragmentManager.beginTransaction().add(R.id.fragmentFrameLayout, fragment).commit();
         }

@@ -24,11 +24,11 @@ public class DataCache {
     }
 
     // The current user's persons and events
-    private final ArrayList<Person> persons = new ArrayList<>();
-    private final ArrayList<Event> events = new ArrayList<>();
+    private ArrayList<Person> persons = new ArrayList<>();
+    private ArrayList<Event> events = new ArrayList<>();
 
     // Authorization token for this current session
-    private AuthToken authToken;
+    private String authToken;
 
     // The person of the current user
     private Person user;
@@ -51,4 +51,73 @@ public class DataCache {
     private final Set<Person> motherSideMales = new HashSet<>();
     private final Set<Person> motherSideFemales = new HashSet<>();
 
+    // getters and setters
+
+    public ArrayList<Person> getPersons() {
+        return persons;
+    }
+
+    public void setPersons(ArrayList<Person> persons) {
+        this.persons = persons;
+    }
+
+    public ArrayList<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(ArrayList<Event> events) {
+        this.events = events;
+    }
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
+
+    public Person getUser() {
+        return user;
+    }
+
+    public void setUser(Person user) {
+        this.user = user;
+    }
+
+    public Map<String, Person> getPeopleByID() {
+        return peopleByID;
+    }
+
+    public Map<String, List<Person>> getChildrenByParentID() {
+        return childrenByParentID;
+    }
+
+    public Map<String, SortedSet<Event>> getEventsByPersonID() {
+        return eventsByPersonID;
+    }
+
+    public Comparator<Event> getEventComparator() {
+        return eventComparator;
+    }
+
+    public Set<String> getEventTypes() {
+        return eventTypes;
+    }
+
+    public Set<Person> getFatherSideMales() {
+        return fatherSideMales;
+    }
+
+    public Set<Person> getFatherSideFemales() {
+        return fatherSideFemales;
+    }
+
+    public Set<Person> getMotherSideMales() {
+        return motherSideMales;
+    }
+
+    public Set<Person> getMotherSideFemales() {
+        return motherSideFemales;
+    }
 }

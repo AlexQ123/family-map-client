@@ -11,9 +11,15 @@
     <string name="email">Email:</string>
     <string name="gender">Gender:</string>
 
-    <!-- Button Names -->
+    <!-- Button names -->
     <string name="maleRadio">Male</string>
     <string name="femaleRadio">Female</string>
     <string name="signInButton">Sign In</string>
     <string name="registerButton">Register</string>
+
+    <!-- Toast texts -->
+    <string name="loginFailToast">The login was unsuccessful.</string>
+    <string name="registerFailToast">Registering was unsuccessful.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
