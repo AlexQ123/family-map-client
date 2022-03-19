@@ -2,6 +2,7 @@ package com.example.family_map_app.serverdata;
 
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -119,5 +120,12 @@ public class DataCache {
 
     public Set<Person> getMotherSideFemales() {
         return motherSideFemales;
+    }
+
+    // OTHER METHODS
+    public void fillEventTypes() {
+        for (Event event : events) {
+            eventTypes.add(event.getEventType().toLowerCase());
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.family_map_app.activity.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,18 +9,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.family_map_app.serverdata.DataCache;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+
+import model.*;
 
 import com.example.family_map_app.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapLoadedCallback {
 
     private GoogleMap map;
+    private Map<String, Float> colorsForEventTypes = new HashMap<>();
 
     public MapFragment() {
         // Required empty public constructor
@@ -46,10 +58,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         map = googleMap;
         map.setOnMapLoadedCallback(this);
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        map.animateCamera(CameraUpdateFactory.newLatLng(sydney));
+        addMarkers(googleMap);
+
+        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(@NonNull Marker marker) {
+                Event event = (Event)marker.getTag();
+                map.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(event.getLatitude(),
+                        event.getLongitude())));
+                return true;
+            }
+        });
     }
 
     @Override
@@ -60,4 +79,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         // move all code where you interact with the map (everything after
         // map.setOnMapLoadedCallback(...) above) to here.
     }
+
+    private void addMarkers(GoogleMap map) {
+        DataCache dataCache = DataCache.getInstance();
+        dataCache.fillEventTypes();
+
+        Set<String> eventTypes = dataCache.getEventTypes();
+        Float hue = 0.0f;
+        for (String type : eventTypes) {
+            colorsForEventTypes.put(type, hue);
+            hue = (hue + 30.0f) % 330.0f;
+            if (hue == 90.0f) {
+                hue += 30.0f;
+            }
+        }
+
+        ArrayList<Event> events = dataCache.getEvents();
+        for (Event event : events) {
+            float correspondingHue = colorsForEventTypes.get(event.getEventType().toLowerCase());
+
+            Marker marker = map.addMarker(new MarkerOptions().
+                    position(new LatLng(event.getLatitude(), event.getLongitude())).
+                    icon(BitmapDescriptorFactory.defaultMarker(correspondingHue)));
+            marker.setTag(event);
+        }
+    }
+
 }
