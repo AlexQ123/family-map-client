@@ -172,12 +172,8 @@ public class LoginFragment extends Fragment {
                         Bundle bundle = message.getData();
                         boolean isLoginSuccess = bundle.getBoolean(LOGIN_SUCCESS_KEY);
                         if (isLoginSuccess) {
-//                            DataCache dataCache = DataCache.getInstance();
-//                            String userFirst = dataCache.getUser().getFirstName();
-//                            String userLast = dataCache.getUser().getLastName();
-//
-//                            Toast.makeText(getActivity(), userFirst + " " + userLast,
-//                                    Toast.LENGTH_LONG).show();
+                            DataCache dataCache = DataCache.getInstance();
+                            dataCache.initialize();
                             if (listener != null) {
                                 listener.notifySignIn();
                             }
@@ -209,12 +205,8 @@ public class LoginFragment extends Fragment {
                         Bundle bundle = message.getData();
                         boolean isRegisterSuccess = bundle.getBoolean(REGISTER_SUCCESS_KEY);
                         if (isRegisterSuccess) {
-//                            DataCache dataCache = DataCache.getInstance();
-//                            String userFirst = dataCache.getUser().getFirstName();
-//                            String userLast = dataCache.getUser().getLastName();
-//
-//                            Toast.makeText(getActivity(), userFirst + " " + userLast,
-//                                    Toast.LENGTH_LONG).show();
+                            DataCache dataCache = DataCache.getInstance();
+                            dataCache.initialize();
                             if (listener != null) {
                                 listener.notifySignIn();
                             }

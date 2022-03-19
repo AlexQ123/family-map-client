@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.family_map_app.serverdata.DataCache;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,6 +35,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private GoogleMap map;
     private Map<String, Float> colorsForEventTypes = new HashMap<>();
 
+    private ImageView icon;
+    private TextView nameText;
+    private TextView eventText;
+
     public MapFragment() {
         // Required empty public constructor
     }
@@ -50,6 +56,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        icon = view.findViewById(R.id.icon);
+        icon.setImageResource(R.drawable.ic_android_brands);
+
+        nameText = view.findViewById(R.id.nameTextView);
+        eventText = view.findViewById(R.id.eventTextView);
+
         return view;
     }
 
@@ -63,9 +75,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
+                // adjust camera
                 Event event = (Event)marker.getTag();
                 map.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(event.getLatitude(),
                         event.getLongitude())));
+
+                // fill event details
+                String eventDetails = event.getEventType() + ": " + event.getCity() + ", " +
+                        event.getCountry() + "(" + event.getYear() + ")";
+                eventText.setText(eventDetails);
+
+                // fill name details
+                DataCache dataCache = DataCache.getInstance();
+                Person person = dataCache.getPeopleByID().get(event.getPersonID());
+                String nameDetails = person.getFirstName() + " " + person.getLastName();
+                nameText.setText(nameDetails);
+
+                // display appropriate icon
+                if (person.getGender().equals("m")) {
+                    icon.setImageResource(R.drawable.ic_person_solid);
+                }
+                else {
+                    icon.setImageResource(R.drawable.ic_person_dress_solid);
+                }
+
                 return true;
             }
         });
@@ -82,7 +115,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     private void addMarkers(GoogleMap map) {
         DataCache dataCache = DataCache.getInstance();
-        dataCache.fillEventTypes();
 
         Set<String> eventTypes = dataCache.getEventTypes();
         Float hue = 0.0f;

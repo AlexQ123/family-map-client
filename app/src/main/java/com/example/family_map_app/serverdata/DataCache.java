@@ -123,9 +123,20 @@ public class DataCache {
     }
 
     // OTHER METHODS
-    public void fillEventTypes() {
+    public void initialize() {
+        fillEventTypes();
+        fillPeopleByID();
+    }
+
+    private void fillEventTypes() {
         for (Event event : events) {
             eventTypes.add(event.getEventType().toLowerCase());
+        }
+    }
+
+    private void fillPeopleByID() {
+        for (Person person : persons) {
+            peopleByID.put(person.getPersonID(), person);
         }
     }
 }

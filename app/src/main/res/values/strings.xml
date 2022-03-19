@@ -21,8 +21,7 @@
     <string name="loginFailToast">The login was unsuccessful.</string>
     <string name="registerFailToast">Registering was unsuccessful.</string>
 
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_maps">MapsActivity</string>
+    <!-- Map fragment default texts -->
+    <string name="nameDefaultText">Welcome!</string>
+    <string name="eventDefaultText">Click on a marker to see event details</string>
 </resources>
