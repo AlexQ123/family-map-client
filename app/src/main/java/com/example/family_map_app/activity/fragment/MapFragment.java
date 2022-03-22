@@ -9,8 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.content.Intent;
 
+import com.example.family_map_app.activity.PersonActivity;
 import com.example.family_map_app.serverdata.DataCache;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -38,6 +41,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private ImageView icon;
     private TextView nameText;
     private TextView eventText;
+    private RelativeLayout bottomLayout;
+    private boolean isPersonActivityClickable;
+    private String clickedPersonID;
 
     public MapFragment() {
         // Required empty public constructor
@@ -62,6 +68,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         nameText = view.findViewById(R.id.nameTextView);
         eventText = view.findViewById(R.id.eventTextView);
 
+        isPersonActivityClickable = false;
+        bottomLayout = view.findViewById(R.id.bottomRelativeLayout);
+        bottomLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isPersonActivityClickable) {
+                    Intent intent = new Intent(getActivity(), PersonActivity.class);
+                    intent.putExtra(PersonActivity.PERSON_ID_KEY, clickedPersonID);
+                    startActivity(intent);
+                }
+            }
+        });
+
         return view;
     }
 
@@ -75,6 +94,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
+                isPersonActivityClickable = true;
+
                 // adjust camera
                 Event event = (Event)marker.getTag();
                 map.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(event.getLatitude(),
@@ -87,6 +108,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
                 // fill name details
                 DataCache dataCache = DataCache.getInstance();
+                clickedPersonID = event.getPersonID();
                 Person person = dataCache.getPeopleByID().get(event.getPersonID());
                 String nameDetails = person.getFirstName() + " " + person.getLastName();
                 nameText.setText(nameDetails);

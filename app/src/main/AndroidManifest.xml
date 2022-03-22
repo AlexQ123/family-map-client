@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FamilyMapApp"
         android:usesCleartextTraffic="true">
-
+        <activity
+            android:name=".activity.PersonActivity"
+            android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 

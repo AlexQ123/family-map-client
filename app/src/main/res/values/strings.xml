@@ -24,4 +24,11 @@
     <!-- Map fragment default texts -->
     <string name="nameDefaultText">Welcome!</string>
     <string name="eventDefaultText">Click on a marker to see event details</string>
+
+    <!-- Person activity texts -->
+    <string name="personFirstNameText">First Name</string>
+    <string name="personLastNameText">Last Name</string>
+    <string name="personGenderText">Gender</string>
+    <string name="personMale">Male</string>
+    <string name="personFemale">Female</string>
 </resources>
