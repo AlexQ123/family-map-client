@@ -51,9 +51,27 @@ public class PersonActivity extends AppCompatActivity {
 
         expandableList = findViewById(R.id.expandableListView);
         DataCache instance = DataCache.getInstance();
-        ArrayList<Event> events = instance.getEvents();
-        ArrayList<Person> persons = instance.getPersons();
-        expandableList.setAdapter(new ExpandableListAdapter(events, persons));
+        ArrayList<Event> events = instance.getEventsByPersonID().get(currentPerson.getPersonID());
+        ArrayList<Event> sortedEvents = sortEvents(events);
+        ArrayList<Person> persons = instance.getImmediateFamily().get(currentPerson.getPersonID());
+        expandableList.setAdapter(new ExpandableListAdapter(sortedEvents, persons, currentPerson));
+    }
+
+    private ArrayList<Event> sortEvents(ArrayList<Event> unsorted) {
+        ArrayList<Event> sorted = new ArrayList<>();
+        while (unsorted.size() > 0) {
+            Event minEvent = unsorted.get(0);
+            int deleteIndex = 0;
+            for (int i = 0; i < unsorted.size(); i++) {
+                if (unsorted.get(i).getYear() < minEvent.getYear()) {
+                    minEvent = unsorted.get(i);
+                    deleteIndex = i;
+                }
+            }
+            sorted.add(minEvent);
+            unsorted.remove(deleteIndex);
+        }
+        return sorted;
     }
 
     private class ExpandableListAdapter extends BaseExpandableListAdapter {
@@ -63,10 +81,12 @@ public class PersonActivity extends AppCompatActivity {
 
         private final ArrayList<Event> events;
         private final ArrayList<Person> family;
+        private final Person clickedPerson;
 
-        ExpandableListAdapter(ArrayList<Event> events, ArrayList<Person> family) {
+        ExpandableListAdapter(ArrayList<Event> events, ArrayList<Person> family, Person clickedPerson) {
             this.events = events;
             this.family = family;
+            this.clickedPerson = clickedPerson;
         }
 
         @Override
@@ -196,7 +216,20 @@ public class PersonActivity extends AppCompatActivity {
             personName.setText(name);
 
             TextView relationship = familyView.findViewById(R.id.listItemBottom);
-            relationship.setText("Fix");
+            String relation;
+            if (currentPerson.getPersonID().equals(clickedPerson.getFatherID())) {
+                relation = "Father";
+            }
+            else if (currentPerson.getPersonID().equals(clickedPerson.getMotherID())) {
+                relation = "Mother";
+            }
+            else if (currentPerson.getPersonID().equals(clickedPerson.getSpouseID())) {
+                relation = "Spouse";
+            }
+            else {
+                relation = "Child";
+            }
+            relationship.setText(relation);
         }
 
         @Override

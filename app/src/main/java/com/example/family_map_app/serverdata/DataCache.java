@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.Set;
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import model.*;
 
@@ -35,16 +36,10 @@ public class DataCache {
     private Person user;
 
     // Useful filters
-    // TODO: populate these filtered data structures using the persons and events ArrayLists
     private final Map<String, Person> peopleByID = new HashMap<>();
-    private final Map<String, List<Person>> childrenByParentID = new HashMap<>();
-    private final Map<String, SortedSet<Event>> eventsByPersonID = new HashMap<>();
-    private final Comparator<Event> eventComparator = new Comparator<Event>() {
-        @Override
-        public int compare(Event event, Event t1) {
-            return 0;
-        }
-    };
+    private final Map<String, ArrayList<Person>> childrenByParentID = new HashMap<>();
+    private final Map<String, ArrayList<Event>> eventsByPersonID = new HashMap<>();
+    private final Map<String, ArrayList<Person>> immediateFamily = new HashMap<>();
     private final Set<String> eventTypes = new HashSet<>();
 
     private final Set<Person> fatherSideMales = new HashSet<>();
@@ -90,16 +85,16 @@ public class DataCache {
         return peopleByID;
     }
 
-    public Map<String, List<Person>> getChildrenByParentID() {
+    public Map<String, ArrayList<Person>> getChildrenByParentID() {
         return childrenByParentID;
     }
 
-    public Map<String, SortedSet<Event>> getEventsByPersonID() {
+    public Map<String, ArrayList<Event>> getEventsByPersonID() {
         return eventsByPersonID;
     }
 
-    public Comparator<Event> getEventComparator() {
-        return eventComparator;
+    public Map<String, ArrayList<Person>> getImmediateFamily() {
+        return immediateFamily;
     }
 
     public Set<String> getEventTypes() {
@@ -126,6 +121,9 @@ public class DataCache {
     public void initialize() {
         fillEventTypes();
         fillPeopleByID();
+        fillEventsByPID();
+        fillChildrenByParent();
+        fillImmediateFamily();
     }
 
     private void fillEventTypes() {
@@ -137,6 +135,76 @@ public class DataCache {
     private void fillPeopleByID() {
         for (Person person : persons) {
             peopleByID.put(person.getPersonID(), person);
+        }
+    }
+
+    private void fillEventsByPID() {
+        for (Event event : events) {
+            String personID = event.getPersonID();
+            if (eventsByPersonID.containsKey(personID)) {
+                ArrayList<Event> toAdd = eventsByPersonID.get(personID);
+                toAdd.add(event);
+                eventsByPersonID.put(personID, toAdd);
+            }
+            else {
+                ArrayList<Event> toAdd = new ArrayList<>();
+                toAdd.add(event);
+                eventsByPersonID.put(personID, toAdd);
+            }
+        }
+    }
+
+    private void fillChildrenByParent() {
+        for (Person person : persons) {
+            String fatherID = person.getFatherID();
+            if (fatherID != null) {
+                if (childrenByParentID.containsKey(fatherID)) {
+                    ArrayList<Person> toAdd = childrenByParentID.get(fatherID);
+                    toAdd.add(person);
+                    childrenByParentID.put(fatherID, toAdd);
+                }
+                else {
+                    ArrayList<Person> toAdd = new ArrayList<>();
+                    toAdd.add(person);
+                    childrenByParentID.put(fatherID, toAdd);
+                }
+            }
+
+            String motherID = person.getMotherID();
+            if (motherID != null) {
+                if (childrenByParentID.containsKey(motherID)) {
+                    ArrayList<Person> toAdd = childrenByParentID.get(motherID);
+                    toAdd.add(person);
+                    childrenByParentID.put(motherID, toAdd);
+                }
+                else {
+                    ArrayList<Person> toAdd = new ArrayList<>();
+                    toAdd.add(person);
+                    childrenByParentID.put(motherID, toAdd);
+                }
+            }
+        }
+    }
+
+    private void fillImmediateFamily() {
+        for (Person person : persons) {
+            String personID = person.getPersonID();
+            ArrayList<Person> family = new ArrayList<>();
+            if (person.getFatherID() != null) {
+                family.add(peopleByID.get(person.getFatherID()));
+            }
+            if (person.getMotherID() != null) {
+                family.add(peopleByID.get(person.getMotherID()));
+            }
+            if (person.getSpouseID() != null) {
+                family.add(peopleByID.get(person.getSpouseID()));
+            }
+            if (childrenByParentID.containsKey(personID)) {
+                for (Person child : childrenByParentID.get(personID)) {
+                    family.add(child);
+                }
+            }
+            immediateFamily.put(personID, family);
         }
     }
 }
