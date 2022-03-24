@@ -45,8 +45,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private boolean isPersonActivityClickable;
     private String clickedPersonID;
 
+    private Event startEvent;
+    private boolean isFromEventActivity = false;
+
     public MapFragment() {
         // Required empty public constructor
+    }
+
+    public MapFragment(Event startEvent) {
+        this.startEvent = startEvent;
+        isFromEventActivity = true;
     }
 
     @Override
@@ -63,12 +71,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         mapFragment.getMapAsync(this);
 
         icon = view.findViewById(R.id.icon);
-        icon.setImageResource(R.drawable.ic_android_brands);
-
         nameText = view.findViewById(R.id.nameTextView);
         eventText = view.findViewById(R.id.eventTextView);
 
-        isPersonActivityClickable = false;
+        if (!isFromEventActivity) {
+            icon.setImageResource(R.drawable.ic_android_brands);
+            nameText.setText(R.string.nameDefaultText);
+            eventText.setText(R.string.eventDefaultText);
+            isPersonActivityClickable = false;
+        }
+
+        if (isFromEventActivity) {
+            isPersonActivityClickable = true;
+            clickedPersonID = startEvent.getPersonID();
+        }
+
         bottomLayout = view.findViewById(R.id.bottomRelativeLayout);
         bottomLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +107,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         map.setOnMapLoadedCallback(this);
 
         addMarkers(googleMap);
+
+        if (isFromEventActivity) {
+            correctDisplay(startEvent);
+        }
 
         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -156,6 +177,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                     position(new LatLng(event.getLatitude(), event.getLongitude())).
                     icon(BitmapDescriptorFactory.defaultMarker(correspondingHue)));
             marker.setTag(event);
+        }
+    }
+
+    private void correctDisplay(Event event) {
+        map.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(event.getLatitude(),
+                event.getLongitude())));
+
+        String eventDetails = event.getEventType() + ": " + event.getCity() + ", " +
+                event.getCountry() + "(" + event.getYear() + ")";
+        eventText.setText(eventDetails);
+
+        DataCache dataCache = DataCache.getInstance();
+        Person person = dataCache.getPeopleByID().get(startEvent.getPersonID());
+        String nameDetails = person.getFirstName() + " " + person.getLastName();
+        nameText.setText(nameDetails);
+
+        if (person.getGender().equals("m")) {
+            icon.setImageResource(R.drawable.ic_person_solid);
+        }
+        else {
+            icon.setImageResource(R.drawable.ic_person_dress_solid);
         }
     }
 

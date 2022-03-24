@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.family_map_app.R;
@@ -57,8 +58,9 @@ public class PersonActivity extends AppCompatActivity {
         expandableList.setAdapter(new ExpandableListAdapter(sortedEvents, persons, currentPerson));
     }
 
-    private ArrayList<Event> sortEvents(ArrayList<Event> unsorted) {
+    private ArrayList<Event> sortEvents(ArrayList<Event> toSort) {
         ArrayList<Event> sorted = new ArrayList<>();
+        ArrayList<Event> unsorted = new ArrayList<>(toSort);
         while (unsorted.size() > 0) {
             Event minEvent = unsorted.get(0);
             int deleteIndex = 0;
@@ -199,6 +201,16 @@ public class PersonActivity extends AppCompatActivity {
             Person thisPerson = dataCache.getPeopleByID().get(currentEvent.getPersonID());
             String person = thisPerson.getFirstName() + " " + thisPerson.getLastName();
             personOfEvent.setText(person);
+
+            LinearLayout list = eventView.findViewById(R.id.list);
+            list.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(PersonActivity.this, EventActivity.class);
+                    intent.putExtra(EventActivity.EVENT_ID_KEY, currentEvent.getEventID());
+                    startActivity(intent);
+                }
+            });
         }
 
         private void initializeFamilyView(View familyView, final int childPosition) {
@@ -230,6 +242,16 @@ public class PersonActivity extends AppCompatActivity {
                 relation = "Child";
             }
             relationship.setText(relation);
+
+            LinearLayout list = familyView.findViewById(R.id.list);
+            list.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(PersonActivity.this, PersonActivity.class);
+                    intent.putExtra(PersonActivity.PERSON_ID_KEY, currentPerson.getPersonID());
+                    startActivity(intent);
+                }
+            });
         }
 
         @Override

@@ -37,6 +37,7 @@ public class DataCache {
 
     // Useful filters
     private final Map<String, Person> peopleByID = new HashMap<>();
+    private final Map<String, Event> eventByID = new HashMap<>();
     private final Map<String, ArrayList<Person>> childrenByParentID = new HashMap<>();
     private final Map<String, ArrayList<Event>> eventsByPersonID = new HashMap<>();
     private final Map<String, ArrayList<Person>> immediateFamily = new HashMap<>();
@@ -85,6 +86,8 @@ public class DataCache {
         return peopleByID;
     }
 
+    public Map<String, Event> getEventByID() { return eventByID; }
+
     public Map<String, ArrayList<Person>> getChildrenByParentID() {
         return childrenByParentID;
     }
@@ -121,6 +124,7 @@ public class DataCache {
     public void initialize() {
         fillEventTypes();
         fillPeopleByID();
+        fillEventByID();
         fillEventsByPID();
         fillChildrenByParent();
         fillImmediateFamily();
@@ -135,6 +139,12 @@ public class DataCache {
     private void fillPeopleByID() {
         for (Person person : persons) {
             peopleByID.put(person.getPersonID(), person);
+        }
+    }
+
+    private void fillEventByID() {
+        for (Event event : events) {
+            eventByID.put(event.getEventID(), event);
         }
     }
 
