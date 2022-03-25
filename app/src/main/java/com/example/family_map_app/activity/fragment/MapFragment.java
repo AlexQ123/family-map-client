@@ -6,6 +6,9 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -66,6 +69,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     @Override
     public View onCreateView(@NonNull LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(layoutInflater, container, savedInstanceState);
+        if (!isFromEventActivity) {
+            setHasOptionsMenu(true);
+        }
         View view = layoutInflater.inflate(R.layout.fragment_map, container, false);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -157,6 +163,32 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         // onMapReady(...) because the map isn't really all the way ready. If you see that, just
         // move all code where you interact with the map (everything after
         // map.setOnMapLoadedCallback(...) above) to here.
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        menuInflater.inflate(R.menu.menu, menu);
+
+        MenuItem searchMenuItem = menu.findItem(R.id.searchMenuItem);
+        searchMenuItem.setIcon(R.drawable.ic_magnifying_glass_solid);
+
+        MenuItem settingsMenuItem = menu.findItem(R.id.settingsMenuItem);
+        settingsMenuItem.setIcon(R.drawable.ic_gear_solid);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menu) {
+        switch (menu.getItemId()) {
+            case R.id.searchMenuItem:
+                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.settingsMenuItem:
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(menu);
+        }
     }
 
     private void addMarkers(GoogleMap map) {

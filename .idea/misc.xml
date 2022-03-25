@@ -4,8 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/alexq/CS240/Family-Map-App/app/src/main/res/drawable/ic_android_brands.xml" value="0.1555" />
+        <entry key="..\:/Users/alexq/CS240/Family-Map-App/app/src/main/res/drawable/ic_gear_solid.xml" value="0.1695" />
         <entry key="..\:/Users/alexq/CS240/Family-Map-App/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1555" />
         <entry key="..\:/Users/alexq/CS240/Family-Map-App/app/src/main/res/drawable/ic_location_dot_solid.xml" value="0.1685" />
+        <entry key="..\:/Users/alexq/CS240/Family-Map-App/app/src/main/res/drawable/ic_magnifying_glass_solid.xml" value="0.1695" />
         <entry key="..\:/Users/alexq/CS240/Family-Map-App/app/src/main/res/drawable/ic_person_dress_solid.xml" value="0.1545" />
         <entry key="..\:/Users/alexq/CS240/Family-Map-App/app/src/main/res/drawable/ic_person_solid.xml" value="0.1545" />
         <entry key="..\:/Users/alexq/CS240/Family-Map-App/app/src/main/res/layout/activity_event.xml" value="0.1838905775075988" />
@@ -17,6 +19,7 @@
         <entry key="..\:/Users/alexq/CS240/Family-Map-App/app/src/main/res/layout/fragment_map.xml" value="0.1838905775075988" />
         <entry key="..\:/Users/alexq/CS240/Family-Map-App/app/src/main/res/layout/list_item.xml" value="0.1770516717325228" />
         <entry key="..\:/Users/alexq/CS240/Family-Map-App/app/src/main/res/layout/list_item_group.xml" value="0.1770516717325228" />
+        <entry key="..\:/Users/alexq/CS240/Family-Map-App/app/src/main/res/menu/menu.xml" value="0.2601851851851852" />
       </map>
     </option>
   </component>

@@ -31,4 +31,8 @@
     <string name="personGenderText">Gender</string>
     <string name="personMale">Male</string>
     <string name="personFemale">Female</string>
+
+    <!-- Menu titles -->
+    <string name="searchMenuTitle">Search</string>
+    <string name="settingsMenuTitle">Settings</string>
 </resources>
