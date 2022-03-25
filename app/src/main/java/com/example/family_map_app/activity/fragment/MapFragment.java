@@ -18,6 +18,7 @@ import android.content.Intent;
 
 import com.example.family_map_app.activity.PersonActivity;
 import com.example.family_map_app.activity.SearchActivity;
+import com.example.family_map_app.activity.SettingsActivity;
 import com.example.family_map_app.serverdata.DataCache;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -101,8 +102,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                     Intent intent = new Intent(getActivity(), PersonActivity.class);
                     intent.putExtra(PersonActivity.PERSON_ID_KEY, clickedPersonID);
                     startActivity(intent);
-//                    Intent intent = new Intent(getActivity(), SearchActivity.class);
-//                    startActivity(intent);
                 }
             }
         });
@@ -180,11 +179,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     public boolean onOptionsItemSelected(MenuItem menu) {
         switch (menu.getItemId()) {
             case R.id.searchMenuItem:
-                Intent intent = new Intent(getActivity(), SearchActivity.class);
-                startActivity(intent);
+                Intent searchIntent = new Intent(getActivity(), SearchActivity.class);
+                startActivity(searchIntent);
                 return true;
             case R.id.settingsMenuItem:
-
+                Intent settingsIntent = new Intent(getActivity(), SettingsActivity.class);
+                startActivity(settingsIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(menu);

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.content.Intent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
@@ -56,6 +57,16 @@ public class PersonActivity extends AppCompatActivity {
         ArrayList<Event> sortedEvents = sortEvents(events);
         ArrayList<Person> persons = instance.getImmediateFamily().get(currentPerson.getPersonID());
         expandableList.setAdapter(new ExpandableListAdapter(sortedEvents, persons, currentPerson));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+        return true;
     }
 
     private ArrayList<Event> sortEvents(ArrayList<Event> toSort) {

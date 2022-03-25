@@ -8,24 +8,16 @@
     android:orientation="vertical"
     tools:context=".activity.SearchActivity">
 
-    <!--
-    <LinearLayout
+
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:id="@+id/searchField"
+        android:inputType="text"
+        android:textSize="18sp"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"> -->
+        android:layout_marginBottom="5dp"/>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/searchField"
-            android:inputType="text"
-            android:textSize="18sp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"/>
-
-    <!-- </LinearLayout> -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchRecyclerView"
