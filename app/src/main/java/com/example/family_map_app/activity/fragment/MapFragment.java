@@ -150,6 +150,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                     icon.setImageResource(R.drawable.ic_person_dress_solid);
                 }
 
+                // draw lines
+                //TODO
+
                 return true;
             }
         });

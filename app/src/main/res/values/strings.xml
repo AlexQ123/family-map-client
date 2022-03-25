@@ -35,4 +35,21 @@
     <!-- Menu titles -->
     <string name="searchMenuTitle">Search</string>
     <string name="settingsMenuTitle">Settings</string>
+
+    <!-- Settings activity texts -->
+    <string name="lifeStory">Life Story Lines</string>
+    <string name="lifeStoryInfo">SHOW LIFE STORY LINES</string>
+    <string name="familyTree">Family Tree Lines</string>
+    <string name="familyTreeInfo">SHOW FAMILY TREE LINES</string>
+    <string name="spouse">Spouse Lines</string>
+    <string name="spouseInfo">SHOW SPOUSE LINES</string>
+    <string name="fatherSide">Father\'s Side</string>
+    <string name="fatherSideInfo">FILTER BY FATHER\'S SIDE OF FAMILY</string>
+    <string name="motherSide">Mother\'s Side</string>
+    <string name="motherSideInfo">FILTER BY MOTHER\'S SIDE OF FAMILY</string>
+    <string name="maleFilter">Male Events</string>
+    <string name="femaleFilter">Female Events</string>
+    <string name="genderInfo">FILTER EVENTS BASED ON GENDER</string>
+    <string name="logout">Logout</string>
+    <string name="logoutInfo">RETURN TO LOGIN SCREEN</string>
 </resources>
