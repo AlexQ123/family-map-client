@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.content.Intent;
 
 import com.example.family_map_app.activity.PersonActivity;
+import com.example.family_map_app.activity.SearchActivity;
 import com.example.family_map_app.serverdata.DataCache;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -94,6 +95,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                     Intent intent = new Intent(getActivity(), PersonActivity.class);
                     intent.putExtra(PersonActivity.PERSON_ID_KEY, clickedPersonID);
                     startActivity(intent);
+//                    Intent intent = new Intent(getActivity(), SearchActivity.class);
+//                    startActivity(intent);
                 }
             }
         });
