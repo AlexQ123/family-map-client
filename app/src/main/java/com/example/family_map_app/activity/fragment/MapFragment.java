@@ -248,11 +248,32 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         clearLines();
 
         DataCache dataCache = DataCache.getInstance();
+
+        // life story lines
         if (dataCache.isLifeStorySwitched()) {
             ArrayList<Event> lifeEvents = dataCache.getEventsByPersonID().get(event.getPersonID());
             ArrayList<Event> sortedLifeEvents = dataCache.sortEvents(lifeEvents);
             for (int i = 0; i < sortedLifeEvents.size() - 1; i++) {
                 drawSingleLine(sortedLifeEvents.get(i), sortedLifeEvents.get(i + 1), Color.GREEN,20);
+            }
+        }
+
+        // family tree lines
+
+        // spouse lines
+        if (dataCache.isSpouseSwitched()) {
+            Person person = dataCache.getPeopleByID().get(event.getPersonID());
+            if (person.getSpouseID() != null) {
+                ArrayList<Person> family = dataCache.getImmediateFamily().get(event.getPersonID());
+                Person spouse = null;
+                for (Person member : family) {
+                    if (person.getSpouseID().equals(member.getPersonID())) {
+                        spouse = member;
+                    }
+                }
+                ArrayList<Event> spouseEvents = dataCache.getEventsByPersonID().get(spouse.getPersonID());
+                Event earliestSpouseEvent = dataCache.sortEvents(spouseEvents).get(0);
+                drawSingleLine(event, earliestSpouseEvent, Color.RED, 20);
             }
         }
     }
