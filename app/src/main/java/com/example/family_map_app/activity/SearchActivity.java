@@ -90,7 +90,8 @@ public class SearchActivity extends AppCompatActivity {
         for (Event event : events) {
             if (event.getCountry().toLowerCase().contains(input) ||
             event.getCity().toLowerCase().contains(input) ||
-            event.getEventType().toLowerCase().contains(input)) {
+            event.getEventType().toLowerCase().contains(input) ||
+            Integer.toString(event.getYear()).contains(input)) {
                 eventsToDisplay.add(event);
             }
         }

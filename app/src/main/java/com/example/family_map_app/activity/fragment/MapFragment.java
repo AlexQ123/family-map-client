@@ -259,6 +259,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         }
 
         // family tree lines
+        if (dataCache.isFamilyTreeSwitched()) {
+            Person person = dataCache.getPeopleByID().get(event.getPersonID());
+            float startingWidth = 20.0f;
+            familyTreeHelper(person, event, startingWidth);
+        }
 
         // spouse lines
         if (dataCache.isSpouseSwitched()) {
@@ -291,6 +296,36 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private void clearLines() {
         for (Polyline line : lines) {
             line.remove();
+        }
+    }
+
+    private void familyTreeHelper(Person person, Event event, float width) {
+        DataCache dataCache = DataCache.getInstance();
+        if (person.getFatherID() != null) {
+            ArrayList<Person> family = dataCache.getImmediateFamily().get(event.getPersonID());
+            Person father = null;
+            for (Person member : family) {
+                if (person.getFatherID().equals(member.getPersonID())) {
+                    father = member;
+                }
+            }
+            ArrayList<Event> fatherEvents = dataCache.getEventsByPersonID().get(father.getPersonID());
+            Event earliestFatherEvent = dataCache.sortEvents(fatherEvents).get(0);
+            drawSingleLine(event, earliestFatherEvent, Color.BLUE, width);
+            familyTreeHelper(father, earliestFatherEvent, width - 5);
+        }
+        if (person.getMotherID() != null) {
+            ArrayList<Person> family = dataCache.getImmediateFamily().get(event.getPersonID());
+            Person mother = null;
+            for (Person member : family) {
+                if (person.getMotherID().equals(member.getPersonID())) {
+                    mother = member;
+                }
+            }
+            ArrayList<Event> motherEvents = dataCache.getEventsByPersonID().get(mother.getPersonID());
+            Event earliestMotherEvent = dataCache.sortEvents(motherEvents).get(0);
+            drawSingleLine(event, earliestMotherEvent, Color.BLUE, width);
+            familyTreeHelper(mother, earliestMotherEvent, width - 5);
         }
     }
 
