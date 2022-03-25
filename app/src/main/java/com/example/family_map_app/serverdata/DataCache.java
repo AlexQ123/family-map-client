@@ -48,7 +48,75 @@ public class DataCache {
     private final Set<Person> motherSideMales = new HashSet<>();
     private final Set<Person> motherSideFemales = new HashSet<>();
 
+    private boolean isLifeStorySwitched;
+    private boolean isFamilyTreeSwitched;
+    private boolean isSpouseSwitched;
+    private boolean isFatherSwitched;
+    private boolean isMotherSwitched;
+    private boolean isMaleSwitched;
+    private boolean isFemaleSwitched;
+
     // getters and setters
+
+    public static void setInstance(DataCache instance) {
+        DataCache.instance = instance;
+    }
+
+    public boolean isLifeStorySwitched() {
+        return isLifeStorySwitched;
+    }
+
+    public void setLifeStorySwitched(boolean lifeStorySwitched) {
+        isLifeStorySwitched = lifeStorySwitched;
+    }
+
+    public boolean isFamilyTreeSwitched() {
+        return isFamilyTreeSwitched;
+    }
+
+    public void setFamilyTreeSwitched(boolean familyTreeSwitched) {
+        isFamilyTreeSwitched = familyTreeSwitched;
+    }
+
+    public boolean isSpouseSwitched() {
+        return isSpouseSwitched;
+    }
+
+    public void setSpouseSwitched(boolean spouseSwitched) {
+        isSpouseSwitched = spouseSwitched;
+    }
+
+    public boolean isFatherSwitched() {
+        return isFatherSwitched;
+    }
+
+    public void setFatherSwitched(boolean fatherSwitched) {
+        isFatherSwitched = fatherSwitched;
+    }
+
+    public boolean isMotherSwitched() {
+        return isMotherSwitched;
+    }
+
+    public void setMotherSwitched(boolean motherSwitched) {
+        isMotherSwitched = motherSwitched;
+    }
+
+    public boolean isMaleSwitched() {
+        return isMaleSwitched;
+    }
+
+    public void setMaleSwitched(boolean maleSwitched) {
+        isMaleSwitched = maleSwitched;
+    }
+
+    public boolean isFemaleSwitched() {
+        return isFemaleSwitched;
+    }
+
+    public void setFemaleSwitched(boolean femaleSwitched) {
+        isFemaleSwitched = femaleSwitched;
+    }
 
     public ArrayList<Person> getPersons() {
         return persons;
@@ -128,6 +196,24 @@ public class DataCache {
         fillEventsByPID();
         fillChildrenByParent();
         fillImmediateFamily();
+    }
+
+    public ArrayList<Event> sortEvents(ArrayList<Event> toSort) {
+        ArrayList<Event> sorted = new ArrayList<>();
+        ArrayList<Event> unsorted = new ArrayList<>(toSort);
+        while (unsorted.size() > 0) {
+            Event minEvent = unsorted.get(0);
+            int deleteIndex = 0;
+            for (int i = 0; i < unsorted.size(); i++) {
+                if (unsorted.get(i).getYear() < minEvent.getYear()) {
+                    minEvent = unsorted.get(i);
+                    deleteIndex = i;
+                }
+            }
+            sorted.add(minEvent);
+            unsorted.remove(deleteIndex);
+        }
+        return sorted;
     }
 
     private void fillEventTypes() {

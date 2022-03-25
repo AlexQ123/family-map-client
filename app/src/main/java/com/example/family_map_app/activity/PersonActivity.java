@@ -54,7 +54,7 @@ public class PersonActivity extends AppCompatActivity {
         expandableList = findViewById(R.id.expandableListView);
         DataCache instance = DataCache.getInstance();
         ArrayList<Event> events = instance.getEventsByPersonID().get(currentPerson.getPersonID());
-        ArrayList<Event> sortedEvents = sortEvents(events);
+        ArrayList<Event> sortedEvents = dataCache.sortEvents(events);
         ArrayList<Person> persons = instance.getImmediateFamily().get(currentPerson.getPersonID());
         expandableList.setAdapter(new ExpandableListAdapter(sortedEvents, persons, currentPerson));
     }
@@ -67,24 +67,6 @@ public class PersonActivity extends AppCompatActivity {
             startActivity(intent);
         }
         return true;
-    }
-
-    private ArrayList<Event> sortEvents(ArrayList<Event> toSort) {
-        ArrayList<Event> sorted = new ArrayList<>();
-        ArrayList<Event> unsorted = new ArrayList<>(toSort);
-        while (unsorted.size() > 0) {
-            Event minEvent = unsorted.get(0);
-            int deleteIndex = 0;
-            for (int i = 0; i < unsorted.size(); i++) {
-                if (unsorted.get(i).getYear() < minEvent.getYear()) {
-                    minEvent = unsorted.get(i);
-                    deleteIndex = i;
-                }
-            }
-            sorted.add(minEvent);
-            unsorted.remove(deleteIndex);
-        }
-        return sorted;
     }
 
     private class ExpandableListAdapter extends BaseExpandableListAdapter {

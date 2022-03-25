@@ -32,6 +32,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import model.*;
 
 import com.example.family_map_app.R;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +54,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     private Event startEvent;
     private boolean isFromEventActivity = false;
+
+    ArrayList<Polyline> lines = new ArrayList<>();
 
     public MapFragment() {
         // Required empty public constructor
@@ -118,6 +122,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
         if (isFromEventActivity) {
             correctDisplay(startEvent);
+            drawLines(startEvent);
         }
 
         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -151,7 +156,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 }
 
                 // draw lines
-                //TODO
+                drawLines(event);
 
                 return true;
             }
@@ -236,6 +241,35 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         }
         else {
             icon.setImageResource(R.drawable.ic_person_dress_solid);
+        }
+    }
+
+    private void drawLines(Event event) {
+        clearLines();
+
+        DataCache dataCache = DataCache.getInstance();
+        if (dataCache.isLifeStorySwitched()) {
+            ArrayList<Event> lifeEvents = dataCache.getEventsByPersonID().get(event.getPersonID());
+            ArrayList<Event> sortedLifeEvents = dataCache.sortEvents(lifeEvents);
+            for (int i = 0; i < sortedLifeEvents.size() - 1; i++) {
+                drawSingleLine(sortedLifeEvents.get(i), sortedLifeEvents.get(i + 1), Color.GREEN,20);
+            }
+        }
+    }
+
+    private void drawSingleLine(Event startEvent, Event endEvent, int color, float width) {
+        LatLng startPoint = new LatLng(startEvent.getLatitude(), startEvent.getLongitude());
+        LatLng endPoint = new LatLng(endEvent.getLatitude(), endEvent.getLongitude());
+
+        PolylineOptions options = new PolylineOptions().add(startPoint, endPoint).
+                color(color).width(width);
+        Polyline line = map.addPolyline(options);
+        lines.add(line);
+    }
+
+    private void clearLines() {
+        for (Polyline line : lines) {
+            line.remove();
         }
     }
 
