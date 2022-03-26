@@ -13,6 +13,10 @@ import android.widget.Switch;
 import com.example.family_map_app.R;
 import com.example.family_map_app.serverdata.DataCache;
 
+import java.util.ArrayList;
+
+import model.*;
+
 public class SettingsActivity extends AppCompatActivity {
 
     private Switch lifeStorySwitch;
@@ -108,6 +112,38 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
     }
+
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        DataCache dataCache = DataCache.getInstance();
+//
+//        ArrayList<Person> personsToMap = new ArrayList<>();
+//        if (dataCache.isMaleSwitched()) {
+//            if (dataCache.isFatherSwitched()) {
+//                personsToMap.addAll(dataCache.getFatherSideMales());
+//            }
+//            if (dataCache.isMotherSwitched()) {
+//                personsToMap.addAll(dataCache.getMotherSideMales());
+//            }
+//        }
+//        if (dataCache.isFemaleSwitched()) {
+//            if (dataCache.isFatherSwitched()) {
+//                personsToMap.addAll(dataCache.getFatherSideFemales());
+//            }
+//            if (dataCache.isMotherSwitched()) {
+//                personsToMap.addAll(dataCache.getMotherSideFemales());
+//            }
+//        }
+//
+//        ArrayList<Event> eventsToMap = new ArrayList<Event>();
+//        for (Person person : personsToMap) {
+//            ArrayList<Event> toAdd = dataCache.getEventsByPersonID().get(person.getPersonID());
+//            eventsToMap.addAll(toAdd);
+//        }
+//
+//        dataCache.setEventsToMap(eventsToMap);
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

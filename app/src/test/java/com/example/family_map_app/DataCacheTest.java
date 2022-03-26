@@ -18,6 +18,9 @@ public class DataCacheTest {
     private Person mom;
     private Person kid;
     private Person wife;
+    private Person dadGrandpa;
+    private Person dadGrandma;
+    private Person momGrandpa;
 
     private Event momDeath;
     private Event momBirth;
@@ -29,15 +32,21 @@ public class DataCacheTest {
     public void setUp() {
         dataCache = DataCache.getInstance();
 
-        dad = new Person("dad", "test", "pa", "smith", "m", null, null, "mom");
+        dad = new Person("dad", "test", "pa", "smith", "m", "dgpa", "dgma", "mom");
         mom = new Person("mom", "test", "ma", "smith", "f", null, null, "dad");
         kid = new Person("kid", "test", "kiddo", "smith", "m", "dad", "mom", "wife");
         wife = new Person("wife", "test", "wife", "smith", "f", null, null, "kid");
+        dadGrandpa = new Person("dgpa", "test", "gpa", "smith", "m", null, null, null);
+        dadGrandma = new Person("dgma", "test", "gma", "smith", "f", null, null, null);
+        momGrandpa = new Person("mgpa", "test", "gpa", "smith", "m", null, null, null);
         ArrayList<Person> testFamily = new ArrayList<>();
+        testFamily.add(dadGrandpa);
+        testFamily.add(dadGrandma);
+        testFamily.add(momGrandpa);
         testFamily.add(dad);
         testFamily.add(mom);
-        testFamily.add(kid);
         testFamily.add(wife);
+        testFamily.add(kid);
         dataCache.setPersons(testFamily);
 
         momDeath = new Event("momDeath", "test", "mom", 1.0f, 1.0f, "USA", "Provo", "death", 2000);
@@ -99,6 +108,18 @@ public class DataCacheTest {
         assertFalse(immediateFamily.get("wife").contains(wife));
 
         assertFalse(immediateFamily.get("kid").contains(kid));
+    }
+
+    // tests filter settings
+    @Test
+    public void existsInFilter() {
+        dataCache.initialize();
+
+    }
+
+    @Test
+    public void notExistsInFilter() {
+        dataCache.initialize();
     }
 
     // testing for events that should be sorted for each person (POSITIVE)

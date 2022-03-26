@@ -43,10 +43,11 @@ public class DataCache {
     private final Map<String, ArrayList<Person>> immediateFamily = new HashMap<>();
     private final Set<String> eventTypes = new HashSet<>();
 
-    private final Set<Person> fatherSideMales = new HashSet<>();
-    private final Set<Person> fatherSideFemales = new HashSet<>();
-    private final Set<Person> motherSideMales = new HashSet<>();
-    private final Set<Person> motherSideFemales = new HashSet<>();
+    private final ArrayList<Person> fatherSideMales = new ArrayList<>();
+    private final ArrayList<Person> fatherSideFemales = new ArrayList<>();
+    private final ArrayList<Person> motherSideMales = new ArrayList<>();
+    private final ArrayList<Person> motherSideFemales = new ArrayList<>();
+    private ArrayList<Event> eventsToMap = new ArrayList<>();
 
     private boolean isLifeStorySwitched;
     private boolean isFamilyTreeSwitched;
@@ -57,6 +58,14 @@ public class DataCache {
     private boolean isFemaleSwitched;
 
     // getters and setters
+
+    public ArrayList<Event> getEventsToMap() {
+        return eventsToMap;
+    }
+
+    public void setEventsToMap(ArrayList<Event> eventsToMap) {
+        this.eventsToMap = eventsToMap;
+    }
 
     public static void setInstance(DataCache instance) {
         DataCache.instance = instance;
@@ -172,30 +181,33 @@ public class DataCache {
         return eventTypes;
     }
 
-    public Set<Person> getFatherSideMales() {
+    public ArrayList<Person> getFatherSideMales() {
         return fatherSideMales;
     }
 
-    public Set<Person> getFatherSideFemales() {
+    public ArrayList<Person> getFatherSideFemales() {
         return fatherSideFemales;
     }
 
-    public Set<Person> getMotherSideMales() {
+    public ArrayList<Person> getMotherSideMales() {
         return motherSideMales;
     }
 
-    public Set<Person> getMotherSideFemales() {
+    public ArrayList<Person> getMotherSideFemales() {
         return motherSideFemales;
     }
 
     // OTHER METHODS
     public void initialize() {
+        user = persons.get(0);
         fillEventTypes();
         fillPeopleByID();
         fillEventByID();
         fillEventsByPID();
         fillChildrenByParent();
         fillImmediateFamily();
+        fillFatherSide();
+        fillMotherSide();
     }
 
     public ArrayList<Event> sortEvents(ArrayList<Event> toSort) {
@@ -332,5 +344,43 @@ public class DataCache {
             }
             immediateFamily.put(personID, family);
         }
+    }
+
+    private void fillFatherSide() {
+        fatherSideHelper(user.getFatherID());
+    }
+
+    private void fatherSideHelper(String personID) {
+        if (personID == null) {
+            return;
+        }
+        Person toAdd = peopleByID.get(personID);
+        if (toAdd.getGender().equals("m")) {
+            fatherSideMales.add(toAdd);
+        }
+        else {
+            fatherSideFemales.add(toAdd);
+        }
+        fatherSideHelper(toAdd.getFatherID());
+        fatherSideHelper(toAdd.getMotherID());
+    }
+
+    private void fillMotherSide() {
+        motherSideHelper(user.getMotherID());
+    }
+
+    private void motherSideHelper(String personID) {
+        if (personID == null) {
+            return;
+        }
+        Person toAdd = peopleByID.get(personID);
+        if (toAdd.getGender().equals("m")) {
+            motherSideMales.add(toAdd);
+        }
+        else {
+            motherSideFemales.add(toAdd);
+        }
+        motherSideHelper(toAdd.getFatherID());
+        motherSideHelper(toAdd.getMotherID());
     }
 }
