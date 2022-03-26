@@ -12,5 +12,4 @@
         android:id="@+id/settingsMenuItem"
         android:title="@string/settingsMenuTitle"
         app:showAsAction="ifRoom"/>
-
 </menu>

@@ -18,9 +18,6 @@ public class DataCacheTest {
     private Person mom;
     private Person kid;
     private Person wife;
-    private Person dadGrandpa;
-    private Person dadGrandma;
-    private Person momGrandpa;
 
     private Event momDeath;
     private Event momBirth;
@@ -32,21 +29,15 @@ public class DataCacheTest {
     public void setUp() {
         dataCache = DataCache.getInstance();
 
-        dad = new Person("dad", "test", "pa", "smith", "m", "dgpa", "dgma", "mom");
+        dad = new Person("dad", "test", "pa", "smith", "m", null, null, "mom");
         mom = new Person("mom", "test", "ma", "smith", "f", null, null, "dad");
         kid = new Person("kid", "test", "kiddo", "smith", "m", "dad", "mom", "wife");
         wife = new Person("wife", "test", "wife", "smith", "f", null, null, "kid");
-        dadGrandpa = new Person("dgpa", "test", "gpa", "smith", "m", null, null, null);
-        dadGrandma = new Person("dgma", "test", "gma", "smith", "f", null, null, null);
-        momGrandpa = new Person("mgpa", "test", "gpa", "smith", "m", null, null, null);
         ArrayList<Person> testFamily = new ArrayList<>();
-        testFamily.add(dadGrandpa);
-        testFamily.add(dadGrandma);
-        testFamily.add(momGrandpa);
+        testFamily.add(kid);
         testFamily.add(dad);
         testFamily.add(mom);
         testFamily.add(wife);
-        testFamily.add(kid);
         dataCache.setPersons(testFamily);
 
         momDeath = new Event("momDeath", "test", "mom", 1.0f, 1.0f, "USA", "Provo", "death", 2000);
@@ -110,16 +101,50 @@ public class DataCacheTest {
         assertFalse(immediateFamily.get("kid").contains(kid));
     }
 
-    // tests filter settings
+    // testing for correctly filtered events according to settings (POSITIVE)
     @Test
     public void existsInFilter() {
         dataCache.initialize();
+        dataCache.setFatherSwitched(true);
+        dataCache.setMaleSwitched(true);
 
+        ArrayList<Event> filteredFatherMale = dataCache.getEventsToMap();
+        assertTrue(filteredFatherMale.contains(dadBirth));
+        assertTrue(filteredFatherMale.contains(dadDeath));
+
+        dataCache.setFatherSwitched(false);
+        dataCache.setMaleSwitched(false);
+        dataCache.setMotherSwitched(true);
+        dataCache.setFemaleSwitched(true);
+
+        ArrayList<Event> filteredMotherFemale = dataCache.getEventsToMap();
+        assertTrue(filteredMotherFemale.contains(momBirth));
+        assertTrue(filteredMotherFemale.contains(marriage));
+        assertTrue(filteredMotherFemale.contains(momDeath));
     }
 
+    // testing to ensure other events are not erroneously included (NEGATIVE)
     @Test
     public void notExistsInFilter() {
         dataCache.initialize();
+        dataCache.setFatherSwitched(true);
+        dataCache.setMaleSwitched(true);
+
+        ArrayList<Event> filteredFatherMale = dataCache.getEventsToMap();
+        assertEquals(2, filteredFatherMale.size());
+        assertFalse(filteredFatherMale.contains(momBirth));
+        assertFalse(filteredFatherMale.contains(marriage));
+        assertFalse(filteredFatherMale.contains(momDeath));
+
+        dataCache.setFatherSwitched(false);
+        dataCache.setMaleSwitched(false);
+        dataCache.setMotherSwitched(true);
+        dataCache.setFemaleSwitched(true);
+
+        ArrayList<Event> filteredMotherFemale = dataCache.getEventsToMap();
+        assertEquals(3, filteredMotherFemale.size());
+        assertFalse(filteredMotherFemale.contains(dadBirth));
+        assertFalse(filteredMotherFemale.contains(dadDeath));
     }
 
     // testing for events that should be sorted for each person (POSITIVE)
@@ -155,7 +180,7 @@ public class DataCacheTest {
         assertFalse(sortedDad.contains(momDeath));
     }
 
-    // testing for a correct search result
+    // testing for a correct search result (POSITIVE)
     @Test
     public void searchReturnsResult() {
         dataCache.initialize();
@@ -175,7 +200,7 @@ public class DataCacheTest {
         assertTrue(yearSearched.contains(dadBirth));
     }
 
-    // testing for no search result
+    // testing for no search result (NEGATIVE)
     @Test
     public void searchReturnsNoResult() {
         dataCache.initialize();

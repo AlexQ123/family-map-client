@@ -113,38 +113,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        DataCache dataCache = DataCache.getInstance();
-//
-//        ArrayList<Person> personsToMap = new ArrayList<>();
-//        if (dataCache.isMaleSwitched()) {
-//            if (dataCache.isFatherSwitched()) {
-//                personsToMap.addAll(dataCache.getFatherSideMales());
-//            }
-//            if (dataCache.isMotherSwitched()) {
-//                personsToMap.addAll(dataCache.getMotherSideMales());
-//            }
-//        }
-//        if (dataCache.isFemaleSwitched()) {
-//            if (dataCache.isFatherSwitched()) {
-//                personsToMap.addAll(dataCache.getFatherSideFemales());
-//            }
-//            if (dataCache.isMotherSwitched()) {
-//                personsToMap.addAll(dataCache.getMotherSideFemales());
-//            }
-//        }
-//
-//        ArrayList<Event> eventsToMap = new ArrayList<Event>();
-//        for (Person person : personsToMap) {
-//            ArrayList<Event> toAdd = dataCache.getEventsByPersonID().get(person.getPersonID());
-//            eventsToMap.addAll(toAdd);
-//        }
-//
-//        dataCache.setEventsToMap(eventsToMap);
-//    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

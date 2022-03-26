@@ -59,10 +59,6 @@ public class DataCache {
 
     // getters and setters
 
-    public ArrayList<Event> getEventsToMap() {
-        return eventsToMap;
-    }
-
     public void setEventsToMap(ArrayList<Event> eventsToMap) {
         this.eventsToMap = eventsToMap;
     }
@@ -256,6 +252,39 @@ public class DataCache {
             eventsToSearch.clear();
         }
         return eventsToSearch;
+    }
+
+    public ArrayList<Event> getEventsToMap() {
+        eventsToMap.clear();
+
+        ArrayList<Person> personsToMap = new ArrayList<>();
+        if (isMaleSwitched) {
+            personsToMap.add(getPeopleByID().get(user.getSpouseID()));
+            if (isFatherSwitched) {
+                personsToMap.addAll(fatherSideMales);
+            }
+            if (isMotherSwitched) {
+                personsToMap.addAll(motherSideMales);
+            }
+        }
+        if (isFemaleSwitched) {
+            personsToMap.add(user);
+            if (isFatherSwitched) {
+                personsToMap.addAll(fatherSideFemales);
+            }
+            if (isMotherSwitched) {
+                personsToMap.addAll(motherSideFemales);
+            }
+        }
+
+        for (Person person : personsToMap) {
+            ArrayList<Event> toAdd = eventsByPersonID.get(person.getPersonID());
+            if (toAdd != null) {
+                eventsToMap.addAll(toAdd);
+            }
+        }
+
+        return eventsToMap;
     }
 
     private void fillEventTypes() {

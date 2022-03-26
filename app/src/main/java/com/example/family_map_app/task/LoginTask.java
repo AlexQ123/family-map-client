@@ -34,7 +34,6 @@ public class LoginTask implements Runnable {
         LoginResult loginResult = server.login(loginRequest, serverHost, serverPort);
 
         if (loginResult.isSuccess()) {
-            // fill data cache if successful
             DataCache dataCache = DataCache.getInstance();
             dataCache.setAuthToken(loginResult.getAuthtoken());
 

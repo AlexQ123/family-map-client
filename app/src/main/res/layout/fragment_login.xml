@@ -161,7 +161,5 @@
                 android:layout_marginHorizontal="5dp"
                 android:text="@string/registerButton" />
         </LinearLayout>
-
     </TableLayout>
-
 </FrameLayout>

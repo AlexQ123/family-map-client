@@ -42,7 +42,6 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:textAlignment="center" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -61,9 +60,6 @@
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"/>
-
         </LinearLayout>
-
     </RelativeLayout>
-
 </RelativeLayout>

@@ -116,35 +116,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     @Override
     public void onResume() {
         super.onResume();
-        DataCache dataCache = DataCache.getInstance();
-
-        ArrayList<Person> personsToMap = new ArrayList<>();
-        if (dataCache.isMaleSwitched()) {
-            personsToMap.add(dataCache.getPeopleByID().get(dataCache.getUser().getSpouseID()));
-            if (dataCache.isFatherSwitched()) {
-                personsToMap.addAll(dataCache.getFatherSideMales());
-            }
-            if (dataCache.isMotherSwitched()) {
-                personsToMap.addAll(dataCache.getMotherSideMales());
-            }
-        }
-        if (dataCache.isFemaleSwitched()) {
-            personsToMap.add(dataCache.getUser());
-            if (dataCache.isFatherSwitched()) {
-                personsToMap.addAll(dataCache.getFatherSideFemales());
-            }
-            if (dataCache.isMotherSwitched()) {
-                personsToMap.addAll(dataCache.getMotherSideFemales());
-            }
-        }
-
-        ArrayList<Event> eventsToMap = new ArrayList<Event>();
-        for (Person person : personsToMap) {
-            ArrayList<Event> toAdd = dataCache.getEventsByPersonID().get(person.getPersonID());
-            eventsToMap.addAll(toAdd);
-        }
-
-        dataCache.setEventsToMap(eventsToMap);
         if (map != null) {
             map.clear();
             addMarkers(map);
@@ -203,11 +174,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     @Override
     public void onMapLoaded() {
-        // You probably don't need this callback. It occurs after onMapReady and I have seen
-        // cases where you get an error when adding markers or otherwise interacting with the map in
-        // onMapReady(...) because the map isn't really all the way ready. If you see that, just
-        // move all code where you interact with the map (everything after
-        // map.setOnMapLoadedCallback(...) above) to here.
+
     }
 
     @Override
@@ -250,7 +217,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             }
         }
 
-        // ArrayList<Event> events = dataCache.getEvents();
         ArrayList<Event> events = dataCache.getEventsToMap();
         for (Event event : events) {
             float correspondingHue = colorsForEventTypes.get(event.getEventType().toLowerCase());
