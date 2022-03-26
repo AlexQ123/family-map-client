@@ -73,33 +73,10 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void displaySearchResults(String input) {
-        personsToDisplay = new ArrayList<>();
-        eventsToDisplay = new ArrayList<>();
-
         DataCache dataCache = DataCache.getInstance();
-        ArrayList<Person> persons = dataCache.getPersons();
-        ArrayList<Event> events = dataCache.getEvents();
 
-        for (Person person : persons) {
-            if (person.getFirstName().toLowerCase().contains(input) ||
-            person.getLastName().toLowerCase().contains(input)) {
-                personsToDisplay.add(person);
-            }
-        }
-
-        for (Event event : events) {
-            if (event.getCountry().toLowerCase().contains(input) ||
-            event.getCity().toLowerCase().contains(input) ||
-            event.getEventType().toLowerCase().contains(input) ||
-            Integer.toString(event.getYear()).contains(input)) {
-                eventsToDisplay.add(event);
-            }
-        }
-
-        if (input.length() == 0) {
-            personsToDisplay.clear();
-            eventsToDisplay.clear();
-        }
+        personsToDisplay = dataCache.getPersonsToSearch(input);
+        eventsToDisplay = dataCache.getEventsToSearch(input);
 
         SearchAdapter adapter = new SearchAdapter(personsToDisplay, eventsToDisplay);
         searchRecyclerView.setAdapter(adapter);

@@ -216,6 +216,36 @@ public class DataCache {
         return sorted;
     }
 
+    public ArrayList<Person> getPersonsToSearch(String input) {
+        ArrayList<Person> personsToSearch = new ArrayList<>();
+        for (Person person : persons) {
+            if (person.getFirstName().toLowerCase().contains(input) ||
+                    person.getLastName().toLowerCase().contains(input)) {
+                personsToSearch.add(person);
+            }
+        }
+        if (input.length() == 0) {
+            personsToSearch.clear();
+        }
+        return personsToSearch;
+    }
+
+    public ArrayList<Event> getEventsToSearch(String input) {
+        ArrayList<Event> eventsToSearch = new ArrayList<>();
+        for (Event event : events) {
+            if (event.getCountry().toLowerCase().contains(input) ||
+                    event.getCity().toLowerCase().contains(input) ||
+                    event.getEventType().toLowerCase().contains(input) ||
+                    Integer.toString(event.getYear()).contains(input)) {
+                eventsToSearch.add(event);
+            }
+        }
+        if (input.length() == 0) {
+            eventsToSearch.clear();
+        }
+        return eventsToSearch;
+    }
+
     private void fillEventTypes() {
         for (Event event : events) {
             eventTypes.add(event.getEventType().toLowerCase());
